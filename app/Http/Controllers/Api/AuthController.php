@@ -47,7 +47,7 @@ class AuthController extends Controller
     }
 
 
-     /**
+    /**
      * @ Logins a user
      * 
      * @transformer 200 App\Transformers\Api\UserTransformer
@@ -64,20 +64,24 @@ class AuthController extends Controller
     {
         //fetch user details,
         $validatedData = $request->validated();
-
-
         //verify details
-        if (!Auth::attempt($validatedData)) {
-            return response()->json(["error", "wrong credentials"], 401);
+        if (Auth::attempt($validatedData)) {
+            /** @var User $user */
+
+            //login user,  return auth token
+            $user = Auth::user();
+            $token = $user->createToken('API Token')->plainTextToken;
+            $responseData = $transformer->transform($user);
+
+
+            return response()->json($responseData, 200)->header(
+                'Authorization',
+                "Bearer $token",
+            )->header("Access-Control-Expose-Headers", "Authorization");
+        } else {
+
+            //returns errror
+            return response()->json(["error" => "Invalid login details"], 401);
         };
-
-        //login user
-       $user = Auth::user();
-
-       // $token = $user->accessToken('API Token')->plainTextToken;
-
-        $responseData = $transformer->transform($user);
-
-        return response()->json($responseData);
-}
+    }
 }
