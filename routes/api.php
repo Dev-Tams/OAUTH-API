@@ -20,6 +20,6 @@ Route::prefix("v1")->group(function () {
     Route::post("user", [AuthController::class, "store"]);
 
     Route::middleware('auth:sanctum')->group(function (){
-        //
+        Route::delete('logout', [AuthController::class, "logout"]);
     });
 });

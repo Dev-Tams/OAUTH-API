@@ -8,6 +8,7 @@ use App\Http\Requests\StoreRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\UserTransformer;
+use GuzzleHttp\Psr7\Request;
 
 class AuthController extends Controller
 {
@@ -83,5 +84,18 @@ class AuthController extends Controller
             //returns errror
             return response()->json(["error" => "Invalid login details"], 401);
         };
+    }
+
+
+ /**
+     * @ Logs out a user
+     * 
+     * @response 201
+     *
+     **/
+    public function logout(StoreRequest $request)
+    {
+        $request->user()->token()->delete();
+        return response()->json(['message' => 'Successfully logged out'], 200);
     }
 }
