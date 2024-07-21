@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\UserTransformer;
-use GuzzleHttp\Psr7\Request;
 
 class AuthController extends Controller
 {
@@ -87,15 +87,19 @@ class AuthController extends Controller
     }
 
 
- /**
+    /**
      * @ Logs out a user
      * 
-     * @response 201
+     * @authenticated
      *
+     * @response 200 {
+     *  "message": "Successfully logged out"
+     * }
      **/
-    public function logout(StoreRequest $request)
+    public function logout(Request $request)
     {
-        $request->user()->token()->delete();
+
+        $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Successfully logged out'], 200);
     }
 }

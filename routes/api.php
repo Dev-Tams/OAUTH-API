@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\PasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,8 @@ Route::prefix("v1")->group(function () {
     Route::post("user", [AuthController::class, "store"]);
 
     Route::middleware('auth:sanctum')->group(function (){
-        Route::delete('logout', [AuthController::class, "logout"]);
+        Route::delete('logout', [AuthController::class, "logout"])->only("post", "delete");
+
+        Route::post("passwords/reset", [PasswordController::class, "reset"]);
     });
 });
