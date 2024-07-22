@@ -21,8 +21,8 @@ Route::prefix("v1")->group(function () {
     Route::post("user", [AuthController::class, "store"]);
 
     Route::middleware('auth:sanctum')->group(function (){
-        Route::delete('logout', [AuthController::class, "logout"])->only("post", "delete");
+        Route::delete('logout', [AuthController::class, "logout"]);
 
-        Route::post("passwords/reset", [PasswordController::class, "reset"]);
+        Route::get("passwords/reset", [PasswordController::class, "passlink"]);
     });
 });
