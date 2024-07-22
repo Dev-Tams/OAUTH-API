@@ -26,7 +26,12 @@ class PasswordController extends Controller
      * 
      * send password reset link to email
      * 
-     * Response 200
+     * 
+     * @response 200 {
+     *  "message": "Email Sent"
+     * }
+     * 
+     * 
      */
     public function passlink(EmailRequest $request)
     {
@@ -35,6 +40,10 @@ class PasswordController extends Controller
             ->rateLimit('password-reset:' .
                 $request->ip(), 3, 1);
 
+                //checks for rate limit and return response
+                if ($rateLimitResponse) {
+                    return $rateLimitResponse;
+                }
 
         //fetches user mail
         if ($user = User::whereEmail($request->email)->first()) {
@@ -53,11 +62,9 @@ class PasswordController extends Controller
 
             return response()->json(["message" => "Check your mail", 200]);
 
-        } else if ($rateLimitResponse) {
-            return response()->json($rateLimitResponse, [
-                "message" => "You may want to check that mail again"
-            ]);
-    }
+        } else {
+            return response()->json(["message" => "You may want to check that mail again"]);
+        }
 }
 
 

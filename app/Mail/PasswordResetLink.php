@@ -37,7 +37,7 @@ class PasswordResetLink extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.password_reset',
+            view: 'mails.passwordReset',
         );
     }
 

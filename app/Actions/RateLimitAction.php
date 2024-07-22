@@ -15,7 +15,7 @@ class RateLimitAction
      * @param int $decayMinutes
      * @return \Illuminate\Http\JsonResponse|void
      */
-    public function rateLimit(string $key, int $maxAttempts = 5, int $decayMinutes = 1)
+    public function rateLimit(string $key, int $maxAttempts = 3, int $decayMinutes = 1)
     {
        
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
