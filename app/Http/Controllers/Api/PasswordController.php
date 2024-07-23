@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Mail\PasswordResetLink;
@@ -9,6 +10,7 @@ use App\Actions\RateLimitAction;
 use App\Http\Requests\EmailRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\UpdatePasswordRequest;
 
 class PasswordController extends Controller
 {
@@ -56,11 +58,15 @@ class PasswordController extends Controller
                 "password_reset_token" => $ref
             ]);
 
+            $url = "passwords/reset?token=" . $user->password_reset_token;
             //sends reset token to user mail
             Mail::to($user->email)
-                ->send(new PasswordResetLink($user));
+                ->send(new PasswordResetLink($user, $url));
 
-            return response()->json(["message" => "Check your mail", 200]);
+            $response =  ["message" => "Email Sent",
+                         "status"  =>          200];
+
+            return response()->json([$response]);
 
         } else {
             return response()->json(["message" => "You may want to check that mail again"]);
@@ -71,18 +77,58 @@ class PasswordController extends Controller
 
     /**
      * 
-     * resets user password 
+     * Resets user password 
+     * 
+     * Reset token expires by an hr
      * 
      * Response 200
      */
-    public function reset($request)
+    public function resetPassword(UpdatePasswordRequest $request)
     {
-        $user = User::whereEmail($request->email);
+
+        //rate limits 
+        $rateLimitResponse = $this->rateLimitAction
+            ->rateLimit('password-reset:' .
+                $request->ip(), 3, 1);
+
+                //checks for rate limit and return response
+                if ($rateLimitResponse) {
+                    return $rateLimitResponse;
+                }
+
+            
+        //gets token
+        $reset = User::wherePasswordResetToken($request->token)->first();
+       //validates token token matches 
+
+
+       //checks if the token has expired (lasts for an hour)
+        if(Carbon::parse($reset->created_at)->isLastHour()){
+            return response()->json([
+                "error" => "Sorry, password reset Link has expired"
+            ]);
+        }
+
+            
+
+       if ($reset == true){
+        //updates password
+        $reset->update([
+            "password" => bcrypt($request->password),
+            "password_reset_token" => null,
+            "password_set" => true,     
+        ]);
+        //200 res
+        return response()->json(["message" => "Password Updated Successfully", 200]);
+
+    }else{
+        return response()->json(['message' => 'We cannot match your request at this moment, try again.'], 401);
     }
+  }
 
     /**
      * 
-     * updates useer password
+     * updates user password
      * 
      * Response 200
      */

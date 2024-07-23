@@ -23,6 +23,7 @@ Route::prefix("v1")->group(function () {
     Route::middleware('auth:sanctum')->group(function (){
         Route::delete('logout', [AuthController::class, "logout"]);
 
-        Route::get("passwords/reset", [PasswordController::class, "passlink"]);
+        Route::post("passwords/reset/link", [PasswordController::class, "passlink"]);
+        Route::post('passwords/resets', [PasswordController::class, 'resetPassword']);
     });
 });
