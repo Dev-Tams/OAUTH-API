@@ -14,11 +14,13 @@ class PasswordResetLink extends Mailable
 {
     use Queueable, SerializesModels;
 
-   public $user;
+   public User $user;
+   public $url;
 
-    public function __construct(User $user)
+    public function __construct(User $user, $url)
     {
         $this->user = $user;
+        $this->url = $url;
     }
 
     /**
