@@ -91,7 +91,8 @@ class AuthController extends Controller
      * @ Logs out a user
      * 
      * @authenticated
-     *
+     *invalidates session
+     * @ deletes token 
      * @response 200 {
      *  "message": "Successfully logged out"
      * }
@@ -101,5 +102,9 @@ class AuthController extends Controller
 
         $request->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'Successfully logged out'], 200);
+
+
+        Auth::logout();
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

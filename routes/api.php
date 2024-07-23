@@ -19,11 +19,12 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("v1")->group(function () {
     Route::post("register", [AuthController::class, "register"]);
     Route::post("user", [AuthController::class, "store"]);
+    Route::post("passwords/reset/link", [PasswordController::class, "passlink"]);
+    Route::post('passwords/resets', [PasswordController::class, 'resetPassword']);
 
     Route::middleware('auth:sanctum')->group(function (){
         Route::delete('logout', [AuthController::class, "logout"]);
-
-        Route::post("passwords/reset/link", [PasswordController::class, "passlink"]);
-        Route::post('passwords/resets', [PasswordController::class, 'resetPassword']);
+        Route::put('passwords/update', [PasswordController::class, "updatePassword"]);
+      
     });
 });

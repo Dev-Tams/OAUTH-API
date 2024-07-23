@@ -9,7 +9,10 @@ use App\Mail\PasswordResetLink;
 use App\Actions\RateLimitAction;
 use App\Http\Requests\EmailRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 
 class PasswordController extends Controller
@@ -83,7 +86,7 @@ class PasswordController extends Controller
      * 
      * Response 200
      */
-    public function resetPassword(UpdatePasswordRequest $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
 
         //rate limits 
@@ -132,5 +135,36 @@ class PasswordController extends Controller
      * 
      * Response 200
      */
-    public function update() {}
+    public function updatePassword(UpdatePasswordRequest $request) 
+    {
+
+    
+        //requests old password + new password
+        $validatedData = $request->validated();
+
+
+         //checks if user is auth
+            /** @var User $user */
+   
+        $user = Auth::user();
+            //updates password
+
+            // if(!Hash::check($validatedData['old_password'], $user->password)){
+            //     return response()->json(["error" => "Sorry, old password doesn't match"]);
+            // }
+       if(Auth::user($validatedData)){
+            $user->update([
+                "password" => "confirmed",
+                "password_reset_token" => null,
+                "password_set" => true,     
+            ]);
+
+            //deletes (old) and regenetate bearer token 
+            $user->tokens()->delete();
+            $token =  $user->createToken("API TOKEN")
+                ->plainTextToken;
+            return response()->json(["Password Updated", 200])
+                ->header('Authorization', "Bearer $token");
+        }
+    }
 }
