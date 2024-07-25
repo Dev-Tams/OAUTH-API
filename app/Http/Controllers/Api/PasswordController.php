@@ -137,24 +137,34 @@ class PasswordController extends Controller
      */
     public function updatePassword(UpdatePasswordRequest $request) 
     {
+           //rate limits 
+        $rateLimitResponse = $this->rateLimitAction
+        ->rateLimit('password-reset:' .
+            $request->ip(), 3, 1);
 
-    
+            //checks for rate limit and return response
+            if ($rateLimitResponse) {
+                return $rateLimitResponse;
+            }
+            
+        //checks if user is auth
+
+        /** @var User $user */
+   
+        $user = Auth::user();
+        
+        
         //requests old password + new password
         $validatedData = $request->validated();
 
-
-         //checks if user is auth
-            /** @var User $user */
-   
-        $user = Auth::user();
-            //updates password
-
-            // if(!Hash::check($validatedData['old_password'], $user->password)){
-            //     return response()->json(["error" => "Sorry, old password doesn't match"]);
-            // }
-       if(Auth::user($validatedData)){
+        
+        //Checks for old password
+            if(!Hash::check($validatedData['old_password'], $user->password)){
+                return response()->json(["error" => "Sorry, old password doesn't match"]);
+            }
+       if($user == Auth::user($validatedData)){
             $user->update([
-                "password" => "confirmed",
+                "password" => bcrypt($validatedData['password']),
                 "password_reset_token" => null,
                 "password_set" => true,     
             ]);
