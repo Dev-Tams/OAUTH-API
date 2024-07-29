@@ -16,7 +16,7 @@ This project demonstrates the integration of Google OAuth with a Laravel applica
 1. **Clone the repository:**
 
    ``` bash 
-   git clone <https://github.com/dev-tams/oauth-api>
+   git clone ([project-repo](https://github.com/dev-tams/oauth-api))
    cd oauth-api 
    ```
 2. **Install dependecies:**
@@ -24,9 +24,10 @@ This project demonstrates the integration of Google OAuth with a Laravel applica
      composer install ```
 
 3. **Add the following variables to your `.env`file:**
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
+
+- GOOGLE_CLIENT_ID= your-google-client-id [Google.com](https://console.cloud.google.com/apis/credentials)
+- GOOGLE_CLIENT_SECRET= your-google-client-secret [Google.com](https://console.cloud.google.com/apis/credentials)
+- GOOGLE_REDIRECT_URI= http://localhost:8000/auth/google/callback
 
 4. **Run the Migrations**
 php artisan migrate
@@ -35,10 +36,10 @@ php artisan migrate
 ## Routes
 
 ### Authentication
-- . Redirect to google 
+-  Redirect to google 
 ``` GET /auth/google ```
 
-- . Google callback
+-  Google callback
 ``` GET /auth/google/callback ```
 
 ### User
