@@ -1,0 +1,300 @@
+openapi: 3.0.3
+info:
+  title: OAUTH-API
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/v1/passwords/reset/link:
+    post:
+      summary: Authorization
+      operationId: authorization
+      description: 'send password reset link to email'
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Email Sent'
+                properties:
+                  message:
+                    type: string
+                    example: 'Email Sent'
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: stewart.simonis@example.org
+              required:
+                - email
+      security: []
+  /api/v1/passwords/resets:
+    post:
+      summary: 'Resets user password'
+      operationId: resetsUserPassword
+      description: "Reset token expires by an hr\n\nResponse 200"
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters. Must not be greater than 32 characters.'
+                  example: '\JIGj#HWSr,|g<cH22"'
+                token:
+                  type: string
+                  description: ''
+                  example: sed
+              required:
+                - password
+                - token
+      security: []
+  /api/v1/logout:
+    delete:
+      summary: 'Logs out a user'
+      operationId: logsOutAUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Successfully logged out'
+                properties:
+                  message:
+                    type: string
+                    example: 'Successfully logged out'
+      tags:
+        - Endpoints
+  /api/v1/passwords/update:
+    put:
+      summary: 'updates user password'
+      operationId: updatesUserPassword
+      description: "Response 200 {\n\"token\" : \"bearer-token\"\n}"
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                old_password:
+                  type: string
+                  description: 'Must be at least 8 characters. Must not be greater than 32 characters.'
+                  example: lchprp
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters. Must not be greater than 32 characters.'
+                  example: 'zIyNPogHY8F7DI[pq`M'
+              required:
+                - old_password
+                - password
+      security: []
+  /api/v1/register:
+    post:
+      summary: 'Create a new user.'
+      operationId: createANewUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 7
+                    name: 'Irving Hessel'
+                    email: levi.braun@example.com
+                    created_at: '2024-07-31T02:28:43.000000Z'
+                    updated_at: '2024-07-31T02:28:43.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 7
+                      name:
+                        type: string
+                        example: 'Irving Hessel'
+                      email:
+                        type: string
+                        example: levi.braun@example.com
+                      created_at:
+                        type: string
+                        example: '2024-07-31T02:28:43.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-07-31T02:28:43.000000Z'
+        201:
+          description: ''
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "{\n  \"name\": \"John Doe\",\n  \"email\": \"johndoe@example.com\",\n  \"password\" : \"password-any\"\n  \"created_at\": \"2021-01-01T00:00:00.000000Z\",\n  \"updated_at\": \"2021-01-01T00:00:00.000000Z\"\n}"
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  errors: 'wrong input'
+                properties:
+                  errors:
+                    type: string
+                    example: 'wrong input'
+      tags:
+        - 'User Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: eum
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: slittel@example.net
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters. Must not be greater than 32 characters.'
+                  example: "r20oQo>cs+@'"
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/v1/user:
+    post:
+      summary: 'Logs in a new user.'
+      operationId: logsInANewUser
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 8
+                    name: 'Elmo Strosin'
+                    email: kovacek.eileen@example.net
+                    created_at: '2024-07-31T02:28:43.000000Z'
+                    updated_at: '2024-07-31T02:28:43.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 8
+                      name:
+                        type: string
+                        example: 'Elmo Strosin'
+                      email:
+                        type: string
+                        example: kovacek.eileen@example.net
+                      created_at:
+                        type: string
+                        example: '2024-07-31T02:28:43.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2024-07-31T02:28:43.000000Z'
+        201:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  email: johndoe@example.com
+                  password: password-any
+                properties:
+                  email:
+                    type: string
+                    example: johndoe@example.com
+                  password:
+                    type: string
+                    example: password-any
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  errors: 'invalid login details'
+                properties:
+                  errors:
+                    type: string
+                    example: 'invalid login details'
+      tags:
+        - 'User Management'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: mckayla.balistreri@example.net
+                password:
+                  type: string
+                  description: 'Must be at least 6 characters. Must not be greater than 32 characters.'
+                  example: 1dZw>w
+              required:
+                - email
+                - password
+      security: []
+tags:
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: 'User Management'
+    description: ''

@@ -1,0 +1,166 @@
+name: 'User Management'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/register
+    metadata:
+      groupName: 'User Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create a new user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: ''
+        required: true
+        example: eum
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: slittel@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      password:
+        name: password
+        description: 'Must be at least 8 characters. Must not be greater than 32 characters.'
+        required: true
+        example: "r20oQo>cs+@'"
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      name: eum
+      email: slittel@example.net
+      password: "r20oQo>cs+@'"
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":7,"name":"Irving Hessel","email":"levi.braun@example.com","created_at":"2024-07-31T02:28:43.000000Z","updated_at":"2024-07-31T02:28:43.000000Z"}}'
+        headers: []
+        description: null
+        custom: []
+      -
+        status: 201
+        content: |-
+          {
+            "name": "John Doe",
+            "email": "johndoe@example.com",
+            "password" : "password-any"
+            "created_at": "2021-01-01T00:00:00.000000Z",
+            "updated_at": "2021-01-01T00:00:00.000000Z"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "errors": "wrong input"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/user
+    metadata:
+      groupName: 'User Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Logs in a new user.'
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: true
+        example: mckayla.balistreri@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+      password:
+        name: password
+        description: 'Must be at least 6 characters. Must not be greater than 32 characters.'
+        required: true
+        example: 1dZw>w
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        custom: []
+    cleanBodyParameters:
+      email: mckayla.balistreri@example.net
+      password: 1dZw>w
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":8,"name":"Elmo Strosin","email":"kovacek.eileen@example.net","created_at":"2024-07-31T02:28:43.000000Z","updated_at":"2024-07-31T02:28:43.000000Z"}}'
+        headers: []
+        description: null
+        custom: []
+      -
+        status: 201
+        content: |-
+          {
+            "email": "johndoe@example.com",
+            "password" : "password-any"
+          }
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 401
+        content: |-
+          {
+            "errors": "invalid login details"
+          }
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
