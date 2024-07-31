@@ -133,7 +133,9 @@ class PasswordController extends Controller
      * 
      * updates user password
      * 
-     * Response 200
+     * Response 200 {
+     * "token" : "bearer-token"
+     * }
      */
     public function updatePassword(UpdatePasswordRequest $request) 
     {

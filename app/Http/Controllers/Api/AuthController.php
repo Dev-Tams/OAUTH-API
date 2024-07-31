@@ -10,20 +10,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Transformers\UserTransformer;
 
+
 class AuthController extends Controller
 {
     /**
-     * @ api endpoint to create a user
-     * 
-     * @transformer 200 App\Transformers\Api\UserTransformer
-     * @transformerModel App\Models\User resourceKey=user
-     * 
-     * @response 401 {
-     *    "errors": {
-     *      "key": ["Wrong input"]
-     *    }
-     *  }
-     **/
+ * Create a new user.
+ * 
+ * @group User Management
+ * 
+ * @transformer 200 App\Transformers\UserTransformer
+ * @transformerModel App\Models\User resourceKey=user
+ * 
+ * @response 201 {
+ *   "name": "John Doe",
+ *   "email": "johndoe@example.com",
+ *   "password" : "password-any"
+ *   "created_at": "2021-01-01T00:00:00.000000Z",
+ *   "updated_at": "2021-01-01T00:00:00.000000Z"
+ * }
+ * 
+ * @response 401 {
+ *   "errors": "wrong input"
+ * }
+ */
 
     public function register(StoreRequest $request, UserTransformer $transformer)
     {
@@ -48,18 +57,23 @@ class AuthController extends Controller
     }
 
 
-    /**
-     * @ Logins a user
-     * 
-     * @transformer 200 App\Transformers\Api\UserTransformer
-     * @transformerModel App\Models\User resourceKey=user
-     * 
-     * @response 401 {
-     *    "errors": {
-     *      "key": ["Wrong input"]
-     *    }
-     *  }
-     **/
+   /**
+ * Logs in a new user.
+ * 
+ * @group User Management
+ * 
+ * @transformer 200 App\Transformers\UserTransformer
+ * @transformerModel App\Models\User resourceKey=user
+ * 
+ * @response 201 {
+ *   "email": "johndoe@example.com",
+ *   "password" : "password-any"
+ * }
+ * 
+ * @response 401 {
+ *   "errors": "invalid login details"
+ * }
+ */
 
     public function store(LoginRequest $request, UserTransformer $transformer)
     {
@@ -88,11 +102,11 @@ class AuthController extends Controller
 
 
     /**
-     * @ Logs out a user
+     * Logs out a user
      * 
      * @authenticated
      *invalidates session
-     * @ deletes token 
+     * deletes token 
      * @response 200 {
      *  "message": "Successfully logged out"
      * }

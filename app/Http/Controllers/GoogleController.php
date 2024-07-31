@@ -10,18 +10,32 @@ use Laravel\Socialite\Facades\Socialite;
 
 class GoogleController extends Controller
 {
+
+    /**
+     * @group Authentication
+     * 
+     * Redirect to Google.
+     * 
+     * @response 302
+     */
     public function redirectToGoogle()
     {
 
         return Socialite::driver('google')
             ->scopes(['openid', 'profile', 'email'])
-            ->stateless() 
+            ->stateless()
             ->redirect();
-        // return Socialite::driver('google')
-        //     ->with(['hd' => 'http://localhost:8000/auth/google/callback'])
-        //     ->redirect("http://localhost:8000/auth/google/callback");
     }
 
+    /**
+     * @group Authentication
+     * 
+     * Handles google callback 
+     * 
+     * @response response 200 {
+     * "token" : "your-api-toke"
+     * }
+     */
     public function handleGoogleCallback()
     {
         try {
@@ -31,7 +45,7 @@ class GoogleController extends Controller
             $user = User::where('email', $googleUser->getEmail())->first();
 
             //updates or create user account info
-           
+
             $user = User::updateOrCreate([
                 'email' => $googleUser->email,
             ], [
