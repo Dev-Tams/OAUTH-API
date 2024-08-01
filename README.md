@@ -9,15 +9,16 @@ This project demonstrates the integration of Google OAuth with a Laravel applica
 - Composer
 - MySQL or any other database supported by Laravel
 - Google OAuth credentials ([Google.com](https://console.cloud.google.com/apis/credentials))
-- Postman or web browser 
+- Postman and web browser 
 
 ## Installation and environment
 
 1. **Clone the repository:**
 
-   ``` bash 
-   git clone ([project-repo](https://github.com/dev-tams/oauth-api))
-   cd oauth-api 
+ 
+   git clone [project-repo](https://github.com/Dev-Tams/OAUTH-API.git)
+     ``` bash
+     cd oauth-api 
    ```
 2. **Install dependecies:**
     ``` bash
