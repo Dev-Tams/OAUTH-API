@@ -19,7 +19,7 @@ class PasswordController extends Controller
 {
 
 
-    //invokes the rate limit action for password reset
+    //injects the rate limit action for password reset
      protected $rateLimitAction;
 
     public function __construct(RateLimitAction $rateLimitAction)
